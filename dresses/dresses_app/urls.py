@@ -25,7 +25,7 @@ schema_view = get_schema_view(
     openapi.Info(
         title="Dress API",
         default_version='v1',
-        description="Welcome to dress app",
+        description="Welcome to dresses app",
     ),
     public=True,
     permission_classes=(permissions.AllowAny,),
