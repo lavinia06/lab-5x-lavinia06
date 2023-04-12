@@ -2,11 +2,11 @@ from django.core.exceptions import ValidationError
 from django.db import models
 #from rest_framework.exceptions import ValidationError
 
-
+import uuid
 
 class Brand(models.Model):
 
-    id = models.IntegerField(primary_key=True)
+    #id = models.IntegerField(primary_key=True)
     brand_fondator = models.CharField(max_length=400)
     brand_name = models.CharField(max_length=400)
     brand_rank = models.CharField(max_length=400)
@@ -17,7 +17,7 @@ class Brand(models.Model):
 class Dress(models.Model):
 
 
-    id = models.IntegerField(primary_key=True)
+    #id = models.IntegerField(primary_key=True)
     name = models.CharField(max_length=200)
     description = models.CharField(max_length=400)
     color = models.CharField(max_length=400)
@@ -31,7 +31,7 @@ class Dress(models.Model):
 
 class RedCarpetPresentation(models.Model):
 
-    id = models.IntegerField(primary_key=True)
+    #id = models.IntegerField(primary_key=True)
     holder = models.CharField(max_length=200)
     city_name = models.CharField(max_length=200)
     special_guest = models.CharField(max_length=200)
@@ -40,7 +40,7 @@ class RedCarpetPresentation(models.Model):
     dresses = models.ManyToManyField('Dress', through='ShowEvent')
 
 class ShowEvent(models.Model):
-    id = models.IntegerField(primary_key=True)
+    #id = models.IntegerField(primary_key=True)
     pieces = models.IntegerField()
     show_date = models.CharField(max_length=200)
     show_popularity = models.IntegerField()

@@ -1,4 +1,4 @@
-from django.db.models import Avg, Count, Max
+from django.db.models import Avg, Count, Max, Min
 from django.forms import model_to_dict
 from django.http import JsonResponse, Http404
 from rest_framework.views import APIView
@@ -80,7 +80,7 @@ def brand_list(request):
 
 
 
-@api_view(['PUT', 'DELETE'])
+@api_view(['GET', 'PUT', 'DELETE'])
 def brand_detail(request, id):
 
     try:
@@ -88,6 +88,10 @@ def brand_detail(request, id):
         #dress = Dress.objects.get(pk=id)
     except Brand.DoesNotExist:
         return Response(status=status.HTTP_404_NOT_FOUND)
+
+    if request.method == 'GET':
+        serializer = BrandSerializer2(brand)
+        return Response(serializer.data)
 
     if request.method == 'PUT':
         serializer = BrandSerializer(brand, data=request.data)
@@ -212,6 +216,14 @@ class ReportModels(generics.ListCreateAPIView):
         return queryset
 
 
+class FilterModels(generics.ListCreateAPIView):
+    serializer_class = BrandSerializer
+
+    def get_queryset(self):
+        queryset = Brand.objects.annotate(min_models=Min('nr_models')).order_by('min_models')
+        return queryset
+
+
 
 @api_view(['GET'])
 def show_average_pieces(request):
@@ -282,7 +294,7 @@ class DressBrandView(APIView):
     def get_dress(self, pk):
         try:
             return Dress.objects.get(pk=pk)
-        except Dress.DoesNotExist :
+        except Dress.DoesNotExist:
             raise Http404
 
     def post(self, request, pk, format=None):
